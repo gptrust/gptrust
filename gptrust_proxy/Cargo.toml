@@ -9,3 +9,5 @@ authors = ["kousiknandy"]
 [dependencies]
 
 gptrust_api = { path = "../gptrust_api" }
+tokio = { version = "1", features = ["full"] }
+
