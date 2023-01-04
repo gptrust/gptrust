@@ -11,6 +11,7 @@ We have two main goals of this project.
 ### Impatient run
 
 ```
-cd gptrust/gptrust_proxy
+$ git clone https://github.com/kousiknandy/gptrust.git
+$ cd gptrust/gptrust_proxy
 gptrust/gptrust_proxy$ OPENAI_API_KEY="sk-pasteyouropeaiapikeyhere" cargo run
 ```
