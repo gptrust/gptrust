@@ -1,0 +1,11 @@
+[package]
+name = "gptrust_proxy"
+version = "0.1.0"
+edition = "2021"
+authors = ["kousiknandy"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+gptrust_api = { path = "../gptrust_api" }
