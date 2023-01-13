@@ -2,45 +2,43 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Permission {
-          id: String,
-          object: String,
-          created: u64,
-          allow_create_engine: bool,
-          allow_sampling: bool,
-          allow_logprobs: bool,
-          allow_search_indices: bool,
-          allow_view: bool,
-          allow_fine_tuning: bool,
-          organization: String,
-          group: Option<String>,
-          is_blocking: bool,
+    id: String,
+    object: String,
+    created: u64,
+    allow_create_engine: bool,
+    allow_sampling: bool,
+    allow_logprobs: bool,
+    allow_search_indices: bool,
+    allow_view: bool,
+    allow_fine_tuning: bool,
+    organization: String,
+    group: Option<String>,
+    is_blocking: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Model {
-       id: String,
-       object: String,
-       created: u64,
-       owned_by: String,
-       permission: Vec<Permission>,
-       root: String,
-       parent: Option<String>,
+    id: String,
+    object: String,
+    created: u64,
+    owned_by: String,
+    permission: Vec<Permission>,
+    root: String,
+    parent: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]
 struct ModelResponse {
-       object: String,
-       data: Vec<Model>,
+    object: String,
+    data: Vec<Model>,
 }
-       
-pub async fn gptrust_getmodels()  ->  Result<(), Box<dyn std::error::Error>> {
 
+pub async fn gptrust_getmodels() -> Result<(), Box<dyn std::error::Error>> {
     let body = gptrust_http::openai_http::openai_get("models".to_string()).await?;
     let model_resp: ModelResponse = serde_json::from_str(&body)?;
     println!("{:#?}", model_resp.data[0]);
 
     Ok(())
-
 }
 
 #[cfg(test)]
