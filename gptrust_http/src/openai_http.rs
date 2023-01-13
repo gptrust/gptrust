@@ -1,6 +1,6 @@
-use std::env;
 use hyper;
 use hyper_tls;
+use std::env;
 
 pub async fn openai_get(_path: String) -> Result<String, Box<dyn std::error::Error>> {
     let https = hyper_tls::HttpsConnector::new();
