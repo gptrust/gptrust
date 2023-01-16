@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Permission {
+pub struct Permission {
     id: String,
     object: String,
     created: u64,
@@ -17,8 +17,8 @@ struct Permission {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Model {
-    id: String,
+pub struct Model {
+    pub id: String,
     object: String,
     created: u64,
     owned_by: String,
@@ -33,12 +33,10 @@ struct ModelResponse {
     data: Vec<Model>,
 }
 
-pub async fn gptrust_getmodels() -> Result<(), Box<dyn std::error::Error>> {
+pub async fn gptrust_getmodels() -> Result<Vec<Model>, Box<dyn std::error::Error>> {
     let body = gptrust_http::openai_http::openai_get("models".to_string()).await?;
     let model_resp: ModelResponse = serde_json::from_str(&body)?;
-    println!("{:#?}", model_resp.data[0]);
-
-    Ok(())
+    Ok(model_resp.data)
 }
 
 #[cfg(test)]
