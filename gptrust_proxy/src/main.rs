@@ -6,7 +6,7 @@ async fn main() {
         .await
         .expect("Failed to get models");
     let names = models.iter().map(|x| x.id.clone()).collect::<Vec<String>>();
-    println!("({}) {:#?}", names.len(), names);
+    println!("({}) {:?}", names.len(), names);
     println!("Printing the list engine names: ");
     let engines = gptrust_api::engines::gptrust_getengines()
         .await
@@ -15,5 +15,14 @@ async fn main() {
         .iter()
         .map(|x| x.id.clone())
         .collect::<Vec<String>>();
-    println!("({}) {:#?}", names.len(), names);
+    println!("({}) {:?}", names.len(), names);
+    let movies =
+        gptrust_api::completions::gptrust_complete(String::from("Name a science fiction movie"))
+            .await
+            .expect("Couldn't complete the prompt");
+    let names = movies
+        .iter()
+        .map(|x| x.text.clone())
+        .collect::<Vec<String>>();
+    println!("({}) {:?}", names.len(), names);
 }
