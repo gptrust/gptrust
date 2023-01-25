@@ -13,7 +13,7 @@ We have two main goals of this project.
 ### Impatient run
 
 ```
- git clone https://github.com/kousiknandy/gptrust.git
+ git clone https://github.com/gptrust/gptrust.git
  cd gptrust/
  OPENAI_API_KEY="sk-pasteyouropeaiapikeyhere" cargo run -- --help
 ```
