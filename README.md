@@ -8,10 +8,12 @@ We have two main goals of this project.
 
 2. Using that library, create a proxy so that any other program can use openai (irrespective of the language they are written). They can communicate to the proxy over a pipe. E.g a python application can do a simply (pseudocode) `with open("/dev/chatgpt") as gpt: gpt.write(); gpt.read()` and the whole complexity of auth, billing will be managed by the proxy
 
+3. Create a CLI frontend, which will just take relevant parameters and `post` them to the API. Maybe we can call it `openaictl` (like kubectl)
+
 ### Impatient run
 
 ```
  git clone https://github.com/kousiknandy/gptrust.git
  cd gptrust/
- OPENAI_API_KEY="sk-pasteyouropeaiapikeyhere" cargo run
+ OPENAI_API_KEY="sk-pasteyouropeaiapikeyhere" cargo run -- --help
 ```
