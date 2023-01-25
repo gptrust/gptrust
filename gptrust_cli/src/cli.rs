@@ -37,6 +37,12 @@ fn cli() -> Command {
                         .value_parser(clap::value_parser!(u32).range(3..100)),
                 ),
         )
+        .subcommand(
+            Command::new("edits")
+                .about("Edit a text")
+                .arg(arg!(<INPUT> "The text to correct"))
+                .arg(arg!(<INSTR> "Instruction to fix")),
+        )
 }
 
 pub async fn process_cli() -> Vec<String> {
@@ -77,6 +83,23 @@ pub async fn process_cli() -> Vec<String> {
                 .await
                 .expect("Couldn't complete the prompt");
             names = completions
+                .iter()
+                .map(|x| x.text.clone())
+                .collect::<Vec<String>>();
+        }
+        Some(("edits", sub_matches)) => {
+            let input = sub_matches
+                .get_one::<String>("INPUT")
+                .expect("Input (text to be edited) is required");
+            let instruction = sub_matches
+                .get_one::<String>("INSTR")
+                .expect("Instructions (how to fix) is required");
+            println!("Apply \"{}\" on: \"{}\"", instruction, input);
+            let edits =
+                gptrust_api::edits::gptrust_edits(input.to_string(), instruction.to_string())
+                    .await
+                    .expect("Could not get the edits");
+            names = edits
                 .iter()
                 .map(|x| x.text.clone())
                 .collect::<Vec<String>>();
