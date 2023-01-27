@@ -50,21 +50,45 @@ pub async fn process_cli() -> Vec<String> {
     let names;
     match matches.subcommand() {
         Some(("engine", sub_matches)) => {
-            println!("Engine {:?}", sub_matches.get_one::<String>("ENGINE"));
-            let engines = gptrust_api::engines::gptrust_getengines()
-                .await
-                .expect("Failed to get engines");
-            names = engines
-                .iter()
-                .map(|x| x.id.clone())
-                .collect::<Vec<String>>();
+            let specific = sub_matches.get_one::<String>("ENGINE");
+            println!("Engine {:?}", specific);
+            match specific {
+                None => {
+                    let engines = gptrust_api::engines::list()
+                        .await
+                        .expect("Failed to get engines");
+                    names = engines
+                        .iter()
+                        .map(|x| x.id.clone())
+                        .collect::<Vec<String>>();
+                }
+                Some(name) => {
+                    let engine = gptrust_api::engines::retrieve(name.clone())
+                        .await
+                        .expect(format!("Failed to get model {}", name).as_str());
+                    let enginename = engine.id.clone();
+                    names = vec![enginename];
+                }
+            }
         }
         Some(("model", sub_matches)) => {
-            println!("Model {:?}", sub_matches.get_one::<String>("MODEL"));
-            let models = gptrust_api::models::gptrust_getmodels()
-                .await
-                .expect("Failed to get models");
-            names = models.iter().map(|x| x.id.clone()).collect::<Vec<String>>();
+            let specific = sub_matches.get_one::<String>("MODEL");
+            println!("Model {:?}", specific);
+            match specific {
+                None => {
+                    let models = gptrust_api::models::list()
+                        .await
+                        .expect("Failed to get models");
+                    names = models.iter().map(|x| x.id.clone()).collect::<Vec<String>>();
+                }
+                Some(name) => {
+                    let model = gptrust_api::models::retrieve(name.clone())
+                        .await
+                        .expect(format!("Failed to get model {}", name).as_str());
+                    let modelname = model.id.clone();
+                    names = vec![modelname];
+                }
+            }
         }
         Some(("complete", sub_matches)) => {
             let engine = sub_matches
