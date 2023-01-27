@@ -33,17 +33,17 @@ struct ModelResponse {
     data: Vec<Model>,
 }
 
-pub async fn gptrust_getmodels() -> Result<Vec<Model>, Box<dyn std::error::Error>> {
-    let body = gptrust_http::openai_http::openai_get("models".to_string()).await?;
+const MODELBASE: &'static str = "models";
+
+pub async fn list() -> Result<Vec<Model>, Box<dyn std::error::Error>> {
+    let body = gptrust_http::openai_http::openai_get(MODELBASE.to_string()).await?;
     let model_resp: ModelResponse = serde_json::from_str(&body)?;
     Ok(model_resp.data)
 }
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
+pub async fn retrieve(name: String) -> Result<Model, Box<dyn std::error::Error>> {
+    let modelpath = MODELBASE.to_owned() + "/" + &name;
+    let body = gptrust_http::openai_http::openai_get(modelpath.to_string()).await?;
+    let model_resp: Model = serde_json::from_str(&body)?;
+    Ok(model_resp)
 }
