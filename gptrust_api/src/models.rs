@@ -36,14 +36,22 @@ struct ModelResponse {
 const MODELBASE: &'static str = "models";
 
 pub async fn list() -> Result<Vec<Model>, Box<dyn std::error::Error>> {
-    let body = gptrust_http::openai_http::openai_get(MODELBASE.to_string()).await?;
-    let model_resp: ModelResponse = serde_json::from_str(&body)?;
-    Ok(model_resp.data)
+    match gptrust_http::openai_http::openai_get(MODELBASE.to_string()).await {
+        Ok(body) => {
+            let model_resp: ModelResponse = serde_json::from_str(&body)?;
+            Ok(model_resp.data)
+        }
+        Err(e) => Err(e),
+    }
 }
 
 pub async fn retrieve(name: String) -> Result<Model, Box<dyn std::error::Error>> {
     let modelpath = MODELBASE.to_owned() + "/" + &name;
-    let body = gptrust_http::openai_http::openai_get(modelpath.to_string()).await?;
-    let model_resp: Model = serde_json::from_str(&body)?;
-    Ok(model_resp)
+    match gptrust_http::openai_http::openai_get(modelpath.to_string()).await {
+        Ok(body) => {
+            let model_resp: Model = serde_json::from_str(&body)?;
+            Ok(model_resp)
+        }
+        Err(e) => Err(e),
+    }
 }

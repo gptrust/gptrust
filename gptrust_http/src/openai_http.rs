@@ -20,12 +20,20 @@ pub async fn openai_get(subpath: String) -> Result<String, Box<dyn std::error::E
 
     // Pass our request builder object to our client.
     let resp = client.request(req).await?;
-    // Get the response body bytes.
-    let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
-    // Convert the body bytes to utf-8
-    let body: String = String::from_utf8(body_bytes.to_vec()).unwrap();
-
-    Ok(body)
+    // println!("{:#?}", resp);
+    match resp.status().is_success() {
+        true => {
+            // Get the response body bytes.
+            let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
+            // Convert the body bytes to utf-8
+            let body: String = String::from_utf8(body_bytes.to_vec()).unwrap();
+            Ok(body)
+        }
+        false => Err(From::from(format!(
+            "Request failed, reason: {}",
+            resp.status()
+        ))),
+    }
 }
 
 pub async fn openai_post(
