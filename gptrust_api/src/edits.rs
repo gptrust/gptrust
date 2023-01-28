@@ -57,9 +57,12 @@ pub async fn gptrust_edits(
     };
     let request_body = serde_json::to_string(&request).unwrap();
     // println!("{:#?}", request_body);
-    let response_body =
-        gptrust_http::openai_http::openai_post("edits".to_string(), request_body).await?;
-    // println!("{:#?}", response_body);
-    let edit_response: CreateEditResponse = serde_json::from_str(&response_body)?;
-    Ok(edit_response.choices)
+    match gptrust_http::openai_http::openai_post("edits".to_string(), request_body).await {
+        Ok(response_body) => {
+            // println!("{:#?}", response_body);
+            let edit_response: CreateEditResponse = serde_json::from_str(&response_body)?;
+            Ok(edit_response.choices)
+        }
+        Err(e) => Err(e),
+    }
 }
