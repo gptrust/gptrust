@@ -91,9 +91,13 @@ pub async fn gptrust_complete(
     };
     let request_body = serde_json::to_string(&request).unwrap();
     // println!("{:#?}", request_body);
-    let response_body =
-        gptrust_http::openai_http::openai_post("completions".to_string(), request_body).await?;
-    // println!("{:#?}", response_body);
-    let completion_response: CreateCompletionResponse = serde_json::from_str(&response_body)?;
-    Ok(completion_response.choices)
+    match gptrust_http::openai_http::openai_post("completions".to_string(), request_body).await {
+        Ok(response_body) => {
+            // println!("{:#?}", response_body);
+            let completion_response: CreateCompletionResponse =
+                serde_json::from_str(&response_body)?;
+            Ok(completion_response.choices)
+        }
+        Err(e) => Err(e),
+    }
 }
