@@ -12,6 +12,6 @@ edition = "2021"
 
 [dependencies]
 
-gptrust_api = { path = "../gptrust_api" }
+gptrust_api = { path = "../gptrust_api", version = "0.1.0" }
 tokio = { version = "1", features = ["full"] }
 

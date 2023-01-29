@@ -11,6 +11,6 @@ edition = "2021"
 
 
 [dependencies]
-gptrust_http = { path = "../gptrust_http" }
+gptrust_http = { path = "../gptrust_http", version = "0.1.0" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0" }

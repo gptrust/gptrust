@@ -12,7 +12,7 @@ edition = "2021"
 
 [dependencies]
 
-gptrust_api = { path = "../gptrust_api" }
+gptrust_api = { path = "../gptrust_api", version = "0.1.0" }
 tokio = { version = "1", features = ["full"] }
 clap_derive = { version = "=4.0.21" }
 clap_lex = { version = "=0.3.0" }
