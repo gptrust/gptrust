@@ -103,9 +103,13 @@ pub async fn process_cli() -> Vec<String> {
                 "Using {:?} engine and {:?} tokens, complete: {:?}",
                 engine, max_tokens, prompt
             );
-            let completions = gptrust_api::completions::gptrust_complete(prompt.to_string())
-                .await
-                .expect("Couldn't complete the prompt");
+            let completions = gptrust_api::completions::complete(
+                prompt.to_string(),
+                Some(engine.to_string()),
+                Some(*max_tokens),
+            )
+            .await
+            .expect("Couldn't complete the prompt");
             names = completions
                 .iter()
                 .map(|x| x.text.clone())

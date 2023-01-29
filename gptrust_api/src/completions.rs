@@ -69,14 +69,16 @@ pub struct CreateCompletionResponse {
     usage: CompletionUsage,
 }
 
-pub async fn gptrust_complete(
+pub async fn complete(
     prompt: String,
+    model: Option<String>,
+    max_tokens: Option<u32>,
 ) -> Result<Vec<CompletionChoice>, Box<dyn std::error::Error>> {
     let request = CreateCompletionRequest {
-        model: String::from("text-ada-001"),
+        model: model.unwrap_or(String::from("text-ada-001")),
         prompt: Prompt::Sentence(prompt),
         suffix: None,
-        max_tokens: 10,
+        max_tokens: max_tokens.unwrap_or(10),
         temperature: 1.0,
         top_p: 1.0,
         n: 1,
