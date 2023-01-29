@@ -2,7 +2,13 @@
 members = ["gptrust_api",  "gptrust_cli",  "gptrust_http",  "gptrust_proxy"]
 default-members = ["gptrust_cli"]
 
-
-
-
-
+[workspace.package]
+version = "0.1.0"
+authors = ["Kousik Nandy <kousiknandy@gmail.com>"]
+description = "A Rust library for OpenAI/GPT-3 API"
+readme = "README.md"
+repository = "https://github.com/gptrust/gptrust"
+license = "MIT"
+keywords = ["gpt", "gptapi"]
+categories = ["api-bindings", "command-line-utilities"]
+edition = "2021"
