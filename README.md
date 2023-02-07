@@ -1,5 +1,7 @@
 # gptrust
 ### Rust bindings to OpenAI, GPT
+Unofficial and community maintained library
+MIT Licensed
 
 ### Goals
 We have two main goals of this project.
