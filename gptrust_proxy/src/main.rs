@@ -2,5 +2,4 @@ use std::env;
 
 #[tokio::main]
 
-async fn main() {
-}
+async fn main() {}

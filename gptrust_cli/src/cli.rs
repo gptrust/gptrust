@@ -19,6 +19,16 @@ fn cli() -> Command {
                 .arg_required_else_help(false),
         )
         .subcommand(
+            Command::new("images")
+                .about("Image features")
+                .subcommand_required(true)
+                .subcommand(
+                    Command::new("generations")
+                        .about("Generate an image")
+                        .arg(arg!(<PROMPT> "Prompt to generate the image")),
+                ),
+        )
+        .subcommand(
             Command::new("complete")
                 .about("Complete a prompt")
                 .arg(arg!(<PROMPT> "The text to complete"))
@@ -115,6 +125,21 @@ pub async fn process_cli() -> Vec<String> {
                 .map(|x| x.text.clone())
                 .collect::<Vec<String>>();
         }
+        Some(("images", sub_matches)) => match sub_matches.subcommand() {
+            Some(("generations", more_matches)) => {
+                let prompt = more_matches
+                    .get_one::<String>("PROMPT")
+                    .expect("A prompt is required");
+                let images = gptrust_api::images::generations(prompt.to_string())
+                    .await
+                    .expect("Couldn't complete the prompt");
+                names = images
+                    .iter()
+                    .map(|x| x.url.clone())
+                    .collect::<Vec<String>>();
+            }
+            _ => unreachable!(),
+        },
         Some(("edits", sub_matches)) => {
             let input = sub_matches
                 .get_one::<String>("INPUT")
