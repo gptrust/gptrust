@@ -1,7 +1,7 @@
 [package]
 name = "gptrust_api"
 description = "Rust binding of OpenAI/GPT-3 API"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Kousik Nandy <kousiknandy@gmail.com>"]
 repository = "https://github.com/gptrust/gptrust"
 license = "MIT"
