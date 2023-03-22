@@ -39,7 +39,7 @@ body:
       label: OS
       placeholder: macOS
     validations:
-      required: true
+      required: false
   - type: input
     id: language-version
     attributes:
