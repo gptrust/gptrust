@@ -1,3 +1,4 @@
+pub mod chat;
 pub mod completions;
 pub mod edits;
 pub mod engines;
