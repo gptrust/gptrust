@@ -6,7 +6,7 @@ use std::collections::HashMap;
 pub struct ChatCompletionRequestMessage {
     role: String,
     content: String,
-    name: Option<String>,
+    // name: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -19,13 +19,13 @@ pub enum RequestStopSequence {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ChatCompletionResponseMessage {
     role: String,
-    content: String,
+    pub content: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ChatCompletionChoice {
     index: u64,
-    message: ChatCompletionResponseMessage,
+    pub message: ChatCompletionResponseMessage,
     finish_reason: String,
 }
 
@@ -71,13 +71,13 @@ pub async fn complete(
         .map(|(r, m)| ChatCompletionRequestMessage {
             role: r,
             content: m,
-	    name: None,
+            // name: None,
         })
         .collect();
     let request = CreateChatCompletionRequest {
         model: model.unwrap_or(String::from("gpt-3.5-turbo")),
         messages: prompts,
-        max_tokens: max_tokens.unwrap_or(10),
+        max_tokens: max_tokens.unwrap_or(100),
         temperature: 1.0,
         top_p: 1.0,
         n: 1,
@@ -88,11 +88,11 @@ pub async fn complete(
         logit_bias: Some(HashMap::new()),
     };
     let request_body = serde_json::to_string(&request).unwrap();
-    println!("{:#?}", request_body);
+    // println!("{:#?}", request_body);
     match gptrust_http::openai_http::openai_post("chat/completions".to_string(), request_body).await
     {
         Ok(response_body) => {
-            println!("{:#?}", response_body);
+            // println!("{:#?}", response_body);
             let completion_response: CreateChatCompletionResponse =
                 serde_json::from_str(&response_body)?;
             Ok(completion_response.choices)

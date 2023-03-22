@@ -29,6 +29,16 @@ fn cli() -> Command {
                 ),
         )
         .subcommand(
+            Command::new("chat")
+                .about("Chat features")
+                .subcommand_required(true)
+                .subcommand(
+                    Command::new("complete")
+                        .about("Complete an ongoing chat")
+                        .arg(arg!(<PROMPT> "Prompt said by the user")),
+                ),
+        )
+        .subcommand(
             Command::new("complete")
                 .about("Complete a prompt")
                 .arg(arg!(<PROMPT> "The text to complete"))
@@ -125,6 +135,27 @@ pub async fn process_cli() -> Vec<String> {
                 .map(|x| x.text.clone())
                 .collect::<Vec<String>>();
         }
+        Some(("chat", sub_matches)) => match sub_matches.subcommand() {
+            Some(("complete", more_matches)) => {
+                let prompt = more_matches
+                    .get_one::<String>("PROMPT")
+                    .expect("A prompt is required");
+                let images = gptrust_api::chat::complete(
+                    vec!["user".to_string()],
+                    vec![prompt.to_string()],
+                    None,
+                    None,
+                )
+                .await
+                .expect("Couldn't complete the prompt");
+                names = images
+                    .iter()
+                    .map(|x| x.message.content.clone())
+                    .collect::<Vec<String>>();
+            }
+            _ => unreachable!(),
+        },
+
         Some(("images", sub_matches)) => match sub_matches.subcommand() {
             Some(("generations", more_matches)) => {
                 let prompt = more_matches
