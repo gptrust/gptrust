@@ -1,3 +1,4 @@
+use core::iter::zip;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -66,7 +67,36 @@ pub async fn complete(
     model: Option<String>,
     max_tokens: Option<u32>,
 ) -> Result<Vec<ChatCompletionChoice>, Box<dyn std::error::Error>> {
-    //let request = CreateChatCompletionRequest {
-    //model: model.unwrap_or(String::from("gpt-3.5-turbo")),
-    //}
+    let prompts: Vec<ChatCompletionRequestMessage> = zip(roles, messages)
+        .map(|(r, m)| ChatCompletionRequestMessage {
+            role: r,
+            content: m,
+	    name: None,
+        })
+        .collect();
+    let request = CreateChatCompletionRequest {
+        model: model.unwrap_or(String::from("gpt-3.5-turbo")),
+        messages: prompts,
+        max_tokens: max_tokens.unwrap_or(10),
+        temperature: 1.0,
+        top_p: 1.0,
+        n: 1,
+        stream: false,
+        stop: None,
+        presence_penalty: 0.0,
+        frequency_penalty: 0.0,
+        logit_bias: Some(HashMap::new()),
+    };
+    let request_body = serde_json::to_string(&request).unwrap();
+    println!("{:#?}", request_body);
+    match gptrust_http::openai_http::openai_post("chat/completions".to_string(), request_body).await
+    {
+        Ok(response_body) => {
+            println!("{:#?}", response_body);
+            let completion_response: CreateChatCompletionResponse =
+                serde_json::from_str(&response_body)?;
+            Ok(completion_response.choices)
+        }
+        Err(e) => Err(e),
+    }
 }
