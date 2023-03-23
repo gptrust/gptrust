@@ -1,6 +1,9 @@
 use hyper;
 use hyper_tls;
 use std::env;
+use std::fs::File;
+use std::io::prelude::*;
+use std::io::{self, Write};
 
 const OPENAI_BASE_URL: &str = "https://api.openai.com/v1/";
 const OPENAI_ORG: &str = "org-ioVS0wAWUCPVBK4x45pqIGCj";
@@ -80,7 +83,7 @@ fn add_field(boundary: String, field: String, value: String) -> io::Result<Vec<u
     )?;
     write!(data, "Content-type: text/plain;charset=UTF-8\r\n")?;
     write!(data, "\r\n")?;
-    write!(data, "{}", value.into_bytes())?;
+    write!(data, "{}", value)?;
     write!(data, "\r\n")?;
     Ok(data)
 }
@@ -89,6 +92,9 @@ fn add_boundary(boundary: String) -> io::Result<Vec<u8>> {
     let mut data = Vec::new();
     write!(data, "--{}--\r\n", boundary)?;
     Ok(data)
+}
+fn generate_boundary() -> String {
+    String::from("--AaB03x")
 }
 
 fn add_file(boundary: String, filename: String) -> io::Result<Vec<u8>> {
@@ -117,6 +123,16 @@ pub async fn openai_post_form(
     let https = hyper_tls::HttpsConnector::new();
     let client = hyper::Client::builder().build::<_, hyper::Body>(https);
     let api_key = env::var(OPENAI_ENV).expect("$OPENAI_API_KEY is not set");
+    let boundary = generate_boundary();
+    let mut data = add_field(boundary.clone(), fields[0].clone(), values[0].clone())?;
+    match filename {
+        Some(x) => {
+            data.extend(add_file(boundary.clone(), x)?);
+        }
+        None => {}
+    }
+    data.extend(add_boundary(boundary.clone())?);
+
     let req = hyper::Request::builder()
         .method(hyper::Method::POST)
         .uri(full_path)
@@ -125,11 +141,12 @@ pub async fn openai_post_form(
         .header(
             "Content-type",
             format!("multipart/form-data; boundary={}", boundary),
-        )?;
+        )
+        .body(data.into())?;
 
     // Pass our request builder object to our client.
     let resp = client.request(req).await?;
-    // println!("{:#?}", resp);
+    println!("{:#?}", resp);
     match resp.status().is_success() {
         true => {
             // Get the response body bytes.
