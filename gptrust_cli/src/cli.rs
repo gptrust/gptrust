@@ -63,6 +63,16 @@ fn cli() -> Command {
                 .arg(arg!(<INPUT> "The text to correct"))
                 .arg(arg!(<INSTR> "Instruction to fix")),
         )
+        .subcommand(
+            Command::new("files")
+                .about("Files commands")
+                .subcommand_required(true)
+                .subcommand(
+                    Command::new("upload")
+                        .about("Upload a file for fine tuning")
+                        .arg(arg!(<FILENAME> "Name of the jsonl file")),
+                ),
+        )
 }
 
 pub async fn process_cli() -> Vec<String> {
@@ -188,6 +198,19 @@ pub async fn process_cli() -> Vec<String> {
                 .map(|x| x.text.clone())
                 .collect::<Vec<String>>();
         }
+        Some(("files", sub_matches)) => match sub_matches.subcommand() {
+            Some(("upload", more_matches)) => {
+                let prompt = more_matches
+                    .get_one::<String>("FILENAME")
+                    .expect("A filename is required");
+                let fileuploaded = gptrust_api::files::upload(prompt.to_string())
+                    .await
+                    .expect("Couldn't upload the file");
+                names = vec![fileuploaded.id];
+            }
+            _ => unreachable!(),
+        },
+
         _ => unreachable!(), // If all subcommands are defined above, anything else is unreachabe!()
     }
     names
