@@ -177,7 +177,7 @@ dependencies = [
 
 [[package]]
 name = "gptrust_api"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "gptrust_http",
  "serde",
@@ -186,7 +186,7 @@ dependencies = [
 
 [[package]]
 name = "gptrust_cli"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "clap",
  "clap_derive",
@@ -197,7 +197,7 @@ dependencies = [
 
 [[package]]
 name = "gptrust_http"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "hyper",
  "hyper-tls",
