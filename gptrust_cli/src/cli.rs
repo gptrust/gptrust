@@ -67,6 +67,7 @@ fn cli() -> Command {
             Command::new("files")
                 .about("Files commands")
                 .subcommand_required(true)
+                .subcommand(Command::new("list").about("List uploaded files"))
                 .subcommand(
                     Command::new("upload")
                         .about("Upload a file for fine tuning")
@@ -207,6 +208,15 @@ pub async fn process_cli() -> Vec<String> {
                     .await
                     .expect("Couldn't upload the file");
                 names = vec![fileuploaded.id];
+            }
+            Some(("list", _more_matches)) => {
+                let filelist = gptrust_api::files::list()
+                    .await
+                    .expect("Can't list our files");
+                names = filelist
+                    .iter()
+                    .map(|x| x.id.clone())
+                    .collect::<Vec<String>>();
             }
             _ => unreachable!(),
         },
