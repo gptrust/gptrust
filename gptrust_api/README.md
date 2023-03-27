@@ -1,6 +1,6 @@
 # gptrust_api
 
-gptrust_api is a library that can used to interact with OpenAI API endpoints.
+gptrust_api is a library that can used to interact with OpenAI API endpoints. It is unofficial and community maintained library, MIT Licensed.
 
 Often it simplifies the API call by supplying sensible defaults. However if adjusting all parameters are needed, 
 please file an issue or submit a PR with a elaborate version of the call.
