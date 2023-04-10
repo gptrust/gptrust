@@ -14,6 +14,17 @@ We have two main goals of this project.
 
 ### Impatient run
 
+#### Pre-requisite
+
+On a vanilla Ubuntu LTS
+
+```
+sudo apt-get update
+sudo apt-get install cargo libssl-dev pkg-config emacs-nox rustfmt
+```
+
+#### Take a spin:
+
 ```
  git clone https://github.com/gptrust/gptrust.git
  cd gptrust/
