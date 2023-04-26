@@ -96,8 +96,8 @@ pub async fn process_cli() -> Vec<String> {
                 Some(name) => {
                     let engine = gptrust_api::engines::retrieve(name.clone())
                         .await
-                        .expect(format!("Failed to get model {}", name).as_str());
-                    let enginename = engine.id.clone();
+                        .unwrap_or_else(|_| panic!("Failed to get model {}", name));
+                    let enginename = engine.id;
                     names = vec![enginename];
                 }
             }
@@ -115,8 +115,8 @@ pub async fn process_cli() -> Vec<String> {
                 Some(name) => {
                     let model = gptrust_api::models::retrieve(name.clone())
                         .await
-                        .expect(format!("Failed to get model {}", name).as_str());
-                    let modelname = model.id.clone();
+                        .unwrap_or_else(|_| panic!("Failed to get model {}", name));
+                    let modelname = model.id;
                     names = vec![modelname];
                 }
             }
