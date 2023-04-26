@@ -49,8 +49,8 @@ pub async fn gptrust_edits(
 ) -> Result<Vec<EditsChoice>, Box<dyn std::error::Error>> {
     let request = CreateEditRequest {
         model: String::from("text-davinci-edit-001"),
-        input: input,
-        instruction: instruction,
+        input,
+        instruction,
         n: 1,
         temperature: 1.0,
         top_p: 1.0,

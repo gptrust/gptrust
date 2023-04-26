@@ -25,7 +25,7 @@ const IMAGEBASE: &'static str = "images";
 pub async fn generations(prompt: String) -> Result<Vec<ImageData>, Box<dyn std::error::Error>> {
     let genpath = IMAGEBASE.to_owned() + "/generations";
     let request = CreateImageRequest {
-        prompt: prompt,
+        prompt,
         n: 1,
         size: "512x512".to_string(),
         response_format: "url".to_string(),
