@@ -75,7 +75,7 @@ pub async fn complete(
         })
         .collect();
     let request = CreateChatCompletionRequest {
-        model: model.unwrap_or(String::from("gpt-3.5-turbo")),
+        model: model.unwrap_or_else(|| String::from("gpt-3.5-turbo")),
         messages: prompts,
         max_tokens: max_tokens.unwrap_or(100),
         temperature: 1.0,

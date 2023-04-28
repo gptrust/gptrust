@@ -75,7 +75,7 @@ pub async fn complete(
     max_tokens: Option<u32>,
 ) -> Result<Vec<CompletionChoice>, Box<dyn std::error::Error>> {
     let request = CreateCompletionRequest {
-        model: model.unwrap_or(String::from("text-ada-001")),
+        model: model.unwrap_or_else(|| String::from("text-ada-001")),
         prompt: Prompt::Sentence(prompt),
         suffix: None,
         max_tokens: max_tokens.unwrap_or(10),
