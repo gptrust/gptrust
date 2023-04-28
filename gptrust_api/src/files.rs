@@ -39,7 +39,7 @@ pub async fn upload(filename: String) -> Result<OpenAIFile, Box<dyn std::error::
 pub async fn list() -> Result<Vec<OpenAIFile>, Box<dyn std::error::Error>> {
     match gptrust_http::openai_http::openai_get("files".to_string()).await {
         Ok(response_body) => {
-	    // println!("{:#?}", response_body);
+            // println!("{:#?}", response_body);
             let filelist: ListFilesResponse = serde_json::from_str(&response_body)?;
             Ok(filelist.data)
         }

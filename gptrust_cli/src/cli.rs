@@ -35,7 +35,21 @@ fn cli() -> Command {
                 .subcommand(
                     Command::new("complete")
                         .about("Complete an ongoing chat")
-                        .arg(arg!(<PROMPT> "Prompt said by the user")),
+                        .arg(arg!(<PROMPT> "Prompt said by the user"))
+                        .arg(
+                            arg!(--model <MODEL> "The model to use for completion")
+                                .num_args(0..=1)
+                                .require_equals(true)
+                                .default_value("gpt-3.5-turbo")
+                                .default_missing_value("gpt-3.5-turbo"),
+                        )
+                        .arg(
+                            arg!(--"max-tokens" <TOKENS>)
+                                .num_args(0..=1)
+                                .require_equals(true)
+                                .default_value("20")
+                                .value_parser(clap::value_parser!(u32).range(3..100)),
+                        ),
                 ),
         )
         .subcommand(
@@ -148,14 +162,19 @@ pub async fn process_cli() -> Vec<String> {
         }
         Some(("chat", sub_matches)) => match sub_matches.subcommand() {
             Some(("complete", more_matches)) => {
+                let engine = more_matches
+                    .get_one::<String>("model")
+                    .map(|s| s.as_str())
+                    .expect("defaulted in clap");
+                let max_tokens = more_matches.get_one::<u32>("max-tokens").unwrap();
                 let prompt = more_matches
                     .get_one::<String>("PROMPT")
                     .expect("A prompt is required");
                 let images = gptrust_api::chat::complete(
                     vec!["user".to_string()],
                     vec![prompt.to_string()],
-                    None,
-                    None,
+                    Some(engine.to_string()),
+                    Some(*max_tokens),
                 )
                 .await
                 .expect("Couldn't complete the prompt");
