@@ -45,3 +45,11 @@ Result: "longhorn beetle found in Europe and western Asia. It is known for its d
          various species of deciduous trees, including oak, beech, and birch. This beetle is not considered a major 
          pest, but large populations can cause" ...etc(1)
 ```
+
+`images generations` (prints the URL as well downloads it in local directory):
+```
+$ cargo run -- images generations "A fat cat sitting on top of a TV, cartoon"
+Result: "https://oaidalleapiprodscus.blob.core.windows.net/private/org-ioVS0wAWUCPVBK4x45pqIGCj/user-HeHal853pZkGvhrECcr1Tzoa/img-U4nhGTI4zLuviyDQyUJvstue.png?......" ...etc(1)
+$ ls -l img*
+-rw-rw-r-- 1 ubuntu ubuntu 787387 Apr 29 11:40 img-U4nhGTI4zLuviyDQyUJvstue.png
+```
