@@ -192,6 +192,7 @@ dependencies = [
  "clap_derive",
  "clap_lex",
  "gptrust_api",
+ "gptrust_http",
  "tokio",
 ]
 

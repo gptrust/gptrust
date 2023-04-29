@@ -198,6 +198,9 @@ pub async fn process_cli() -> Vec<String> {
                     .iter()
                     .map(|x| x.url.clone())
                     .collect::<Vec<String>>();
+                gptrust_http::http::save_url(names[0].clone(), None)
+                    .await
+                    .expect("Can't save the image locally");
             }
             _ => unreachable!(),
         },
