@@ -33,7 +33,7 @@ struct ModelResponse {
     data: Vec<Model>,
 }
 
-const MODELBASE: &'static str = "models";
+const MODELBASE: &str = "models";
 
 pub async fn list() -> Result<Vec<Model>, Box<dyn std::error::Error>> {
     match gptrust_http::openai_http::openai_get(MODELBASE.to_string()).await {

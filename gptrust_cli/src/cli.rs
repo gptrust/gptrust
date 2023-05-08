@@ -172,7 +172,7 @@ pub async fn process_cli() -> Vec<String> {
                     .get_one::<String>("PROMPT")
                     .expect("A prompt is required");
                 let prompt_str;
-                if prompt.starts_with("@") {
+                if prompt.starts_with('@') {
                     let promptfile = prompt.get(1..);
                     let reader = match promptfile {
                         Some(filename) => {
@@ -181,7 +181,7 @@ pub async fn process_cli() -> Vec<String> {
                         }
                         None => String::from(""),
                     };
-                    prompt_str = reader.clone();
+                    prompt_str = reader;
                 } else if prompt == "-" {
                     let mut input = String::new();
                     std::io::stdin()

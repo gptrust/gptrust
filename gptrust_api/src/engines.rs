@@ -14,7 +14,7 @@ struct EngineResponse {
     data: Vec<Engine>,
 }
 
-const ENGINEBASE: &'static str = "engines";
+const ENGINEBASE: &str = "engines";
 
 pub async fn list() -> Result<Vec<Engine>, Box<dyn std::error::Error>> {
     match gptrust_http::openai_http::openai_get(ENGINEBASE.to_string()).await {
