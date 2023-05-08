@@ -172,7 +172,7 @@ pub async fn process_cli() -> Vec<String> {
                     .get_one::<String>("PROMPT")
                     .expect("A prompt is required");
                 let prompt_str;
-                if prompt.starts_with("@") {
+                if prompt.starts_with('@') {
                     let promptfile = prompt.get(1..);
                     let reader = match promptfile {
                         Some(filename) => {
