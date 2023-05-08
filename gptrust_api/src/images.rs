@@ -20,7 +20,7 @@ pub struct ImagesResponse {
     data: Vec<ImageData>,
 }
 
-const IMAGEBASE: &'static str = "images";
+const IMAGEBASE: &str = "images";
 
 pub async fn generations(prompt: String) -> Result<Vec<ImageData>, Box<dyn std::error::Error>> {
     let genpath = IMAGEBASE.to_owned() + "/generations";
