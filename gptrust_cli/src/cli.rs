@@ -48,8 +48,8 @@ fn cli() -> Command {
                             arg!(--"max-tokens" <TOKENS>)
                                 .num_args(0..=1)
                                 .require_equals(true)
-                                .default_value("20")
-                                .value_parser(clap::value_parser!(u32).range(3..100)),
+                                .default_value("256")
+                                .value_parser(clap::value_parser!(u32).range(3..4097)),
                         ),
                 ),
         )
@@ -68,8 +68,8 @@ fn cli() -> Command {
                     arg!(--"max-tokens" <TOKENS>)
                         .num_args(0..=1)
                         .require_equals(true)
-                        .default_value("10")
-                        .value_parser(clap::value_parser!(u32).range(3..100)),
+                        .default_value("128")
+                        .value_parser(clap::value_parser!(u32).range(3..4097)),
                 ),
         )
         .subcommand(
