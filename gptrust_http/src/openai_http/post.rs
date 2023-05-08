@@ -95,7 +95,7 @@ pub async fn openai_post_form(
     let api_key = env::var(OPENAI_ENV).expect("$OPENAI_API_KEY is not set");
     let boundary = generate_boundary();
     let mut data = add_field(boundary.clone(), fields[0].clone(), values[0].clone())?;
-    if  let Some(x) = filename {
+    if let Some(x) = filename {
         data.extend(add_file(boundary.clone(), x)?);
     }
     data.extend(add_boundary(boundary.clone())?);
