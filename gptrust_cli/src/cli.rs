@@ -1,4 +1,5 @@
 use clap::{arg, Command};
+use std::io::Read;
 
 fn cli() -> Command {
     Command::new("gptrust_cli")
@@ -170,9 +171,29 @@ pub async fn process_cli() -> Vec<String> {
                 let prompt = more_matches
                     .get_one::<String>("PROMPT")
                     .expect("A prompt is required");
+                let prompt_str;
+                if prompt.starts_with("@") {
+                    let promptfile = prompt.get(1..);
+                    let reader = match promptfile {
+                        Some(filename) => {
+                            String::from_utf8(std::fs::read(filename).expect("Can't open file"))
+                                .expect("Error reading")
+                        }
+                        None => String::from(""),
+                    };
+                    prompt_str = reader.clone();
+                } else if prompt == "-" {
+                    let mut input = String::new();
+                    std::io::stdin()
+                        .read_to_string(&mut input)
+                        .expect("Error reading stdin");
+                    prompt_str = input.clone();
+                } else {
+                    prompt_str = prompt.clone();
+                }
                 let images = gptrust_api::chat::complete(
                     vec!["user".to_string()],
-                    vec![prompt.to_string()],
+                    vec![prompt_str.to_string()],
                     Some(engine.to_string()),
                     Some(*max_tokens),
                 )
