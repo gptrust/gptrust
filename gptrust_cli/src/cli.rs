@@ -181,7 +181,7 @@ pub async fn process_cli() -> Vec<String> {
                         }
                         None => String::from(""),
                     };
-                    prompt_str = reader.clone();
+                    prompt_str = reader;
                 } else if prompt == "-" {
                     let mut input = String::new();
                     std::io::stdin()
