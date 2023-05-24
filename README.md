@@ -56,3 +56,17 @@ Result: "https://oaidalleapiprodscus.blob.core.windows.net/private/org-ioVS0wAWU
 $ ls -l img*
 -rw-rw-r-- 1 ubuntu ubuntu 787387 Apr 29 11:40 img-U4nhGTI4zLuviyDQyUJvstue.png
 ```
+
+`audio transcriptions` (transcribes an MP3, we can't stream for now, need the file on local disk)
+```
+$ cargo run -- audio transcriptions ~/QueenBohemianRhapsody_Mama.ogg.mp3
+My bad, just killed a man Put a gun against his head Pulled my trigger, now he's dead
+
+$ cargo run -- audio transcriptions ~/ezekiel-25-17.mp3
+The path of the righteous man is beset on all sides by the inequities of the selfish and the
+tyranny of evil men. Blessed is he who in the name of charity and goodwill shepherds the weak
+through the valley of darkness, for he is truly his brother's keeper and the finder of lost
+children. And I will strike down upon thee with great vengeance and furious anger those who
+attempt to poison and destroy my brothers. And you will know my name is the Lord when I...
+```
+(Of course we know Bohemian Rhapsody starts with a regret but `whisper-1` makes it obvious)
