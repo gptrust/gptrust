@@ -113,7 +113,7 @@ pub async fn openai_post_form(
 
     // Pass our request builder object to our client.
     let resp = client.request(req).await?;
-    println!("{:#?}", resp);
+    // println!("{:#?}", resp);
     match resp.status().is_success() {
         true => {
             // Get the response body bytes.

@@ -1,3 +1,4 @@
+pub mod audio;
 pub mod chat;
 pub mod completions;
 pub mod edits;

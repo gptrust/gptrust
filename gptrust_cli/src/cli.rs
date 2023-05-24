@@ -89,6 +89,16 @@ fn cli() -> Command {
                         .arg(arg!(<FILENAME> "Name of the jsonl file")),
                 ),
         )
+        .subcommand(
+            Command::new("audio")
+                .about("Audio commands")
+                .subcommand_required(true)
+                .subcommand(
+                    Command::new("transcriptions")
+                        .about("Upload an audio file for transcription")
+                        .arg(arg!(<FILENAME> "Name of the MP3 file")),
+                ),
+        )
 }
 
 pub async fn process_cli() -> Vec<String> {
@@ -242,6 +252,18 @@ pub async fn process_cli() -> Vec<String> {
                 .map(|x| x.text.clone())
                 .collect::<Vec<String>>();
         }
+        Some(("audio", sub_matches)) => match sub_matches.subcommand() {
+            Some(("transcriptions", more_matches)) => {
+                let prompt = more_matches
+                    .get_one::<String>("FILENAME")
+                    .expect("A filename is required");
+                let transcript = gptrust_api::audio::transcriptions(prompt.to_string())
+                    .await
+                    .expect("Couldn't transcribe the audio");
+                names = vec![transcript.text];
+            }
+            _ => unreachable!(),
+        },
         Some(("files", sub_matches)) => match sub_matches.subcommand() {
             Some(("upload", more_matches)) => {
                 let prompt = more_matches
