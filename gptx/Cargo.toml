@@ -1,5 +1,5 @@
 [package]
-name = "gpt"
+name = "gptx"
 version = "0.1.0"
 description = "Unix like text pipe through gpt (openai API)"
 authors = ["Kousik Nandy <kousiknandy@gmail.com>"]
