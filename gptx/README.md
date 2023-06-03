@@ -1,14 +1,14 @@
 ## gpt
 
-`gpt` is a binary that pipes stdin to stdout through chatgpt (oepnai `/chat/complete` api endpoint)
+`gptx` is a binary that pipes stdin to stdout through chatgpt (oepnai `/chat/complete` api endpoint)
 
-Chain it with `cat`, `awk`, `grep` etc tools and let `gpt` give its opinion on the text!
+Chain it with `cat`, `awk`, `grep` etc tools and let `gptx` give its opinion on the text!
 
 ### Usage
 
 Ask about system settings:
 ```
-$ grep options /etc/resolv.conf | tee /dev/tty | gpt
+$ grep options /etc/resolv.conf | tee /dev/tty | gptx
 options edns0 trust-ad
 EDNS0 and Trust-AD are both options in DNS (Domain Name System) configuration.
 - EDNS0 (Extension mechanisms for DNS 0) is an upgrade to the original DNS protocol that increases its 
@@ -22,7 +22,7 @@ that rely on it for their network infrastructure.
 ```
 
 ```
-$ sudo grep ^%sudo /etc/sudoers | tee /dev/tty | gpt
+$ sudo grep ^%sudo /etc/sudoers | tee /dev/tty | gptx
 %sudo   ALL=(ALL:ALL) ALL
 This is a line in the sudoers file, which is used to specify the permissions and privileges that are 
 granted to users on a Unix or Linux system.
@@ -42,7 +42,7 @@ configured correctly.
 
 Or about legal stuffs:
 ```
-$ cat /etc/legal | tail -3 | tr -d '\n' | tee /dev/tty | gpt
+$ cat /etc/legal | tail -3 | tr -d '\n' | tee /dev/tty | gptx
 Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted byapplicable law.
 This statement serves as a disclaimer that Ubuntu is provided as-is and the developers behind it do not 
 guarantee its performance, reliability, or suitability for any particular purpose. Users are responsible 
@@ -53,7 +53,7 @@ applicable law."
 
 Or, pass it some logs:
 ```
-$ journalctl --system | grep -oE 'RETBleed.*' | head -1 | tee /dev/tty | gpt
+$ journalctl --system | grep -oE 'RETBleed.*' | head -1 | tee /dev/tty | gptx
 RETBleed: WARNING: Spectre v2 mitigation leaves CPU vulnerable to RETBleed attacks, data leaks possible!
 As an AI language model, I do not have access to current news or updates. However, I can provide general 
 information about the mentioned vulnerability. RETBleed is a side-channel attack that exploits a weakness 
@@ -65,7 +65,7 @@ security patches as soon as they become available to mitigate the risk.
 ```
 
 ```
-$ tail -1 /var/log/cloud-init-output.log | tee /dev/tty | gpt
+$ tail -1 /var/log/cloud-init-output.log | tee /dev/tty | gptx
 Cloud-init v. 23.1.1-0ubuntu0~22.04.1 finished at Sat, 03 Jun 2023 18:56:06 +0000. Datasource DataSourceEc2Local.  Up 70.10 seconds
 This message likely indicates the completion of the Cloud-init initialization process on an Ubuntu 22.04 
 instance running in an EC2 environment. The version number of Cloud-init is provided, as well as the 
@@ -76,7 +76,7 @@ seconds" at the end indicates that the instance has been running for just over a
 Even, do it over network:
 ```
 $ mkfifo /tmp/pipe
-$ nc -lk 10000 0</tmp/pipe | gpt 1>/tmp/pipe
+$ nc -lk 10000 0</tmp/pipe | gptx 1>/tmp/pipe
 
 $ echo "There is no spoon" | nc localhost 10000
 As an AI language model, I do not have any physical form, thus I do not need a spoon to eat. However, 

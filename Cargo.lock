@@ -176,14 +176,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "gpt"
-version = "0.1.0"
-dependencies = [
- "gptrust_api",
- "tokio",
-]
-
-[[package]]
 name = "gptrust_api"
 version = "0.1.4"
 dependencies = [
@@ -214,6 +206,14 @@ dependencies = [
 
 [[package]]
 name = "gptrust_proxy"
+version = "0.1.0"
+dependencies = [
+ "gptrust_api",
+ "tokio",
+]
+
+[[package]]
+name = "gptx"
 version = "0.1.0"
 dependencies = [
  "gptrust_api",
