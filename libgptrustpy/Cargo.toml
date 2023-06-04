@@ -1,0 +1,21 @@
+[package]
+name = "libgptrustpy"
+version = "0.1.0"
+edition = "2021"
+authors = ["Kousik Nandy <kousiknandy@gmail.com>"]
+repository = "https://github.com/gptrust/gptrust"
+license = "MIT"
+keywords = ["gpt", "gptapi"]
+categories = ["api-bindings", "command-line-utilities"]
+
+[lib]
+name = "gptrustpy"
+crate-type = ["cdylib"]
+
+[dependencies.cpython]
+version = "0.7.1"
+features = ["extension-module"]
+
+[dependencies]
+gptrust_api = { path = "../gptrust_api", version = "0.1.4" }
+tokio = { version = "1", features = ["full"] }

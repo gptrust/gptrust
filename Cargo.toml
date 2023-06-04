@@ -1,5 +1,5 @@
 [workspace]
-members = ["gptrust_api",  "gptrust_cli",  "gptrust_http",  "gptrust_proxy", "gptx"]
+members = ["gptrust_api",  "gptrust_cli",  "gptrust_http",  "gptrust_proxy", "gptx", "libgptrustpy"]
 default-members = ["gptrust_cli"]
 
 [workspace.package]
