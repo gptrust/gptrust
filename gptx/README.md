@@ -1,4 +1,4 @@
-## gpt
+## gptx
 
 `gptx` is a binary that pipes stdin to stdout through chatgpt (oepnai `/chat/complete` api endpoint)
 
