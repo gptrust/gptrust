@@ -232,7 +232,7 @@ pub async fn process_cli() -> Vec<String> {
                     .map(|x| x.url.clone())
                     .collect::<Vec<String>>();
                 let img_file =
-                    gptrust_http::http::save_url(names[0].clone(), None, Some(dump2file))
+                    gptrust_http::http::save_url(names[0].clone(), None, vec![dump2file])
                         .await
                         .expect("Can't save the image locally");
                 println!("./imgcat {}", img_file);

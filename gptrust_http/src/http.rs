@@ -1,12 +1,12 @@
 use hyper;
 use hyper_tls;
 
-type Callback = fn(String, Option<String>, &[u8]) -> Result<(), Box<dyn std::error::Error>>;
+type Callback = fn(String, &Option<String>, &[u8]) -> Result<(), Box<dyn std::error::Error>>;
 
 pub async fn save_url(
     url_path: String,
     _directory: Option<String>,
-    callback: Option<Callback>,
+    callback: Vec<Callback>,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let url = url_path.parse::<hyper::Uri>().unwrap();
     let https = hyper_tls::HttpsConnector::new();
@@ -18,11 +18,8 @@ pub async fn save_url(
     match resp.status().is_success() {
         true => {
             let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
-            match callback {
-                Some(function) => {
-                    function(file_name.clone(), _directory, &body_bytes)?;
-                }
-                None => {}
+            for function in &callback {
+                function(file_name.clone(), &_directory, &body_bytes)?;
             }
             Ok(file_name)
         }
