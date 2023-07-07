@@ -229,9 +229,10 @@ pub async fn process_cli() -> Vec<String> {
                     .iter()
                     .map(|x| x.url.clone())
                     .collect::<Vec<String>>();
-                gptrust_http::http::save_url(names[0].clone(), None)
+                let img_file = gptrust_http::http::save_url(names[0].clone(), None)
                     .await
                     .expect("Can't save the image locally");
+                println!("./imgcat {}", img_file);
             }
             _ => unreachable!(),
         },
