@@ -1,6 +1,8 @@
 use clap::{arg, Command};
 use std::io::Read;
 
+use crate::utils::dump2file;
+
 fn cli() -> Command {
     Command::new("gptrust_cli")
         .about("A CLI to interact with OpenAI API")
@@ -229,9 +231,10 @@ pub async fn process_cli() -> Vec<String> {
                     .iter()
                     .map(|x| x.url.clone())
                     .collect::<Vec<String>>();
-                let img_file = gptrust_http::http::save_url(names[0].clone(), None)
-                    .await
-                    .expect("Can't save the image locally");
+                let img_file =
+                    gptrust_http::http::save_url(names[0].clone(), None, Some(dump2file))
+                        .await
+                        .expect("Can't save the image locally");
                 println!("./imgcat {}", img_file);
             }
             _ => unreachable!(),

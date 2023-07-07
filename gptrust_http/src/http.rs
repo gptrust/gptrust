@@ -1,10 +1,12 @@
 use hyper;
 use hyper_tls;
-use std::io::Write;
+
+type Callback = fn(String, Option<String>, &[u8]) -> Result<(), Box<dyn std::error::Error>>;
 
 pub async fn save_url(
     url_path: String,
     _directory: Option<String>,
+    callback: Option<Callback>,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let url = url_path.parse::<hyper::Uri>().unwrap();
     let https = hyper_tls::HttpsConnector::new();
@@ -15,10 +17,13 @@ pub async fn save_url(
     let resp = client.get(url).await?;
     match resp.status().is_success() {
         true => {
-            let mut file = std::fs::File::create(file_name.clone()).unwrap();
             let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
-            file.write_all(&body_bytes)
-                .expect("Could not write data to file");
+            match callback {
+                Some(function) => {
+                    function(file_name.clone(), _directory, &body_bytes)?;
+                }
+                None => {}
+            }
             Ok(file_name)
         }
         false => Err(From::from(format!(
