@@ -226,7 +226,7 @@ pub async fn process_cli() -> Vec<String> {
                     .expect("A prompt is required");
                 let images = gptrust_api::images::generations(prompt.to_string())
                     .await
-                    .expect("Couldn't complete the prompt");
+                    .expect("Couldn't generate image from the prompt");
                 names = images
                     .iter()
                     .map(|x| x.url.clone())
