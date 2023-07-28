@@ -12,6 +12,7 @@ static CHOICES: &'static [&'static str] = &[
 ];
 const STYLE: &str = "cartoon sketch";
 
+use std::io;
 use std::io::Write;
 use std::process::Command;
 
@@ -37,8 +38,9 @@ pub fn dump2screen(
 
 #[tokio::main]
 async fn main() {
+    let mut input_string = String::new();
     let mut rng = rand::thread_rng();
-    let word = CHOICES.choose(&mut rng);
+    let word = CHOICES.choose(&mut rng).unwrap();
     let prompt = format!("{:?},{}", word, STYLE);
     let images = gptrust_api::images::generations(prompt.to_string())
         .await
@@ -52,4 +54,12 @@ async fn main() {
             .await
             .expect("Can't save the image locally");
     let _rm = std::fs::remove_file(img_file);
+
+    input_string.clear();
+    print!("Your guess: ");
+    io::stdout().flush().unwrap();
+    io::stdin().read_line(&mut input_string).unwrap();
+    if word == &input_string.trim() {
+        println!("Correct!")
+    }
 }
