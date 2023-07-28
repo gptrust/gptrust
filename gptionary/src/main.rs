@@ -47,8 +47,9 @@ async fn main() {
         .iter()
         .map(|x| x.url.clone())
         .collect::<Vec<String>>();
-    let _img_file =
+    let img_file =
         gptrust_http::http::save_url(names[0].clone(), None, vec![dump2file, dump2screen])
             .await
             .expect("Can't save the image locally");
+    let _rm = std::fs::remove_file(img_file);
 }
