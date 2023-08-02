@@ -61,5 +61,7 @@ async fn main() {
     io::stdin().read_line(&mut input_string).unwrap();
     if word == &input_string.trim() {
         println!("Correct!")
+    } else {
+        println!("Sorry! It was {}", word)
     }
 }
