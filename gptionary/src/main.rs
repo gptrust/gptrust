@@ -30,9 +30,22 @@ static CHOICES: &'static [&'static str] = &[
 ];
 const STYLE: &str = "cartoon sketch";
 
-use std::io;
-use std::io::Write;
-use std::process::Command;
+use std::{
+    env,
+    fs::File,
+    io,
+    io::{prelude::*, BufReader, Write},
+    path::Path,
+    process::Command,
+};
+
+fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {
+    let file = File::open(filename).expect("no such file");
+    let buf = BufReader::new(file);
+    buf.lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect()
+}
 
 pub fn dump2file(
     file_name: String,
@@ -56,9 +69,17 @@ pub fn dump2screen(
 
 #[tokio::main]
 async fn main() {
+    let args: Vec<String> = env::args().collect();
     let mut input_string = String::new();
     let mut rng = rand::thread_rng();
-    let word = CHOICES.choose(&mut rng).unwrap();
+    let word;
+    if args.len() > 1 {
+        let filename = &args[1];
+        let lines = lines_from_file(filename);
+        word = lines.choose(&mut rng).unwrap().clone();
+    } else {
+        word = CHOICES.choose(&mut rng).unwrap().to_string();
+    }
     let prompt = format!("{:?},{}", word, STYLE);
     let images = gptrust_api::images::generations(prompt.to_string())
         .await
@@ -77,7 +98,7 @@ async fn main() {
     print!("Your guess: ");
     io::stdout().flush().unwrap();
     io::stdin().read_line(&mut input_string).unwrap();
-    if word == &input_string.trim() {
+    if word == input_string.trim().to_string() {
         println!("Correct!")
     } else {
         println!("Sorry! It was {}", word)
