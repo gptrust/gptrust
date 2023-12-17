@@ -3,9 +3,34 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct ChatCompletionRequestMessageContentPartText {
+    r#type: String,
+    text: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ChatCompletionRequestMessageContentPartImage {
+    r#type: String,
+    img_url: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum ChatCompletionRequestMessageContentPart {
+    Text(ChatCompletionRequestMessageContentPartText),
+    Image(ChatCompletionRequestMessageContentPartImage),
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
+pub enum ChatCompletionRequestUserMessage {
+    Sentence(String),
+    Multipart(Vec<ChatCompletionRequestMessageContentPart>),
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct ChatCompletionRequestMessage {
     role: String,
-    content: String,
+    content: ChatCompletionRequestUserMessage,
     // name: Option<String>,
 }
 
@@ -70,7 +95,7 @@ pub async fn complete(
     let prompts: Vec<ChatCompletionRequestMessage> = zip(roles, messages)
         .map(|(r, m)| ChatCompletionRequestMessage {
             role: r,
-            content: m,
+            content: ChatCompletionRequestUserMessage::Sentence(m),
             // name: None,
         })
         .collect();
